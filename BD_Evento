@@ -1,0 +1,56 @@
+drop database Rockinrs;
+create database RockinRS;
+
+use RockinRS;
+
+create table DadoPessoal(
+		id_DadosPessoais integer primary key auto_increment,
+        nome_clinete varchar(50),
+        cpf varchar(20),
+		data_nascimento date,
+        email varchar(50),
+        telefone bigint(14)
+);
+
+/*create table DadosEvento(		
+		id_DadosEvento integer primary key auto_increment,
+        id_DadosPessoais integer,
+        banda_dia varchar(50),
+        local_show varchar(50),
+        foreign key(id_DadosPessoais) references DadoPessoa(id_DadosPessoais) ON UPDATE CASCADE
+);*/
+
+create table Venda(
+		  id_venda integer primary key auto_increment,
+          id_DadosPessoais integer,
+		  valor_total_venda float,
+          volume_venda integer,
+          foreign key (id_DadosPessoais) references DadoPessoal(id_DadosPessoais)
+);
+
+create table Ingresso(
+		id_ingresso integer primary key auto_increment,
+        id_DadosPessoais integer,
+		tipo varchar(10),
+		lote integer,
+        valor_ingresso float,
+        foreign key(id_DadosPessoais) references DadoPessoal(id_DadosPessoais)
+);
+
+create table Venda_Ingresso(
+		id_ingresso integer,
+        id_venda integer,
+        foreign key (id_ingresso) references Ingresso(id_ingresso),
+        foreign key (id_venda) references Venda(id_venda)
+); 
+
+create table BandaDados(
+		id_banda integer primary key auto_increment,
+        id_DadosPessoais integer,
+		Nome_Banda varchar(50),
+        genero varchar(10),
+        nr_integrantes int,
+        dia_apresentacao date,
+        horario_apresentacao time,
+        foreign key(id_DadosPessoais) references DadoPessoal(id_DadosPessoais)
+);
