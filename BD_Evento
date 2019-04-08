@@ -1,48 +1,35 @@
-drop database Rockinrs;
-create database RockinRS;
+drop database RockInRS;
+create database RockInRS;
 
-use RockinRS;
+use RockInRS;
 
-create table Venda_Ingresso(
-	id_venda integer primary key auto_increment,
-        valor_ingresso float,
-	valor_total_venda float,
-        volume_venda integer,
-        tipo varchar(10),
-	lote integer
-);
-drop table Venda_Ingresso;
-
-
-
-create table BandaDados(
-	id_bandaDados integer primary key auto_increment,
-	Nome_Banda varchar(50),
-        genero varchar(10),
-        nr_integrantes int
-);
-drop table BandaDados;
-
-create table DadoPessoal(
-	id_DadoPessoal integer primary key auto_increment,
-	id_venda integer,
-        nome_clinete varchar(50),
+create table Tipo_Ingresso(
+			 id_tipo_ingresso integer primary key auto_increment,
+             descricao_ingresso longtext,
+             valor_ingresso float,
+             volume_ingresso int
+ );       
+ 
+ create table Cliente(
+		id_cliente integer primary key auto_increment,
+		nome_cliente varchar(50),
         cpf varchar(20),
-	data_nascimento date,
         email varchar(50),
-        telefone bigint(14),
-        foreign key(id_venda) references Venda_Ingresso(id_venda)
-
-);
-drop table DadoPessoal;
-
-create table DadosEvento(		
-	id_DadosEvento integer primary key auto_increment,
-        id_DadoPessoal integer,
-	id_bandaDados integer,
-        banda_dia varchar(50),
-        cidade varchar(50),
-        foreign key(id_DadoPessoal) references DadoPessoal(id_DadoPessoal),
-        foreign key(id_bandaDados) references BandaDados(id_bandaDados)
-);
-drop table DadosEvento;
+        telefone bigint(14)
+ );
+ 
+ create table Tipo_Ingresso_Cliente(
+ id_tipo_ingresso_cliente integer primary key auto_increment,
+ id_tipo_ingresso integer,
+ id_cliente integer,
+ foreign key(id_tipo_ingresso) references Tipo_Ingresso(id_tipo_ingresso),
+ foreign key(id_cliente) references Cliente(id_cliente)
+ );
+ 
+ create table Endereco_Cliente(
+ id_endereco_cliente integer primary key auto_increment,
+ id_cliente integer,
+ cidade varchar(50),
+ nome_cliente varchar(50),
+ foreign key(id_cliente) references Cliente(id_cliente)
+ );
