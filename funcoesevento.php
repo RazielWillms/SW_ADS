@@ -1,6 +1,84 @@
 <?php
 require_once "style.php";
 
+function formingresso($pdo)
+{
+    ?>
+    <form method="post" action="tipoIngresso.php">
+    <estilobody>
+    Selecione o Cliente:
+    <select name="id_cliente">
+    <?php
+    $ClienteArray = consultarClientes($pdo);
+                foreach ($ClienteArray as $ClienteDados){
+                    echo '<option value="' . $ClienteDados['id_cliente'] .'">' .$ClienteDados['nome_cliente'] . '</option>' . PHP_EOL;
+                }
+                ?>
+    </select><br>
+    Selecione o Tipo de Ingresso:
+    <select name="id_tipo_ingresso">
+    <?php
+    $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso');
+    $IngressoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($IngressoArray as $ingressoDados){
+        echo '<option value="' . $ingressoDados['id_tipo_ingresso'] .'">' .$ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
+    }
+        ?>
+        </select><br>
+        Quantidade: <input type="number" name="volume_ingresso"/><br>
+
+        <input type="submit" name="action" value="Cadastrar"/>
+        <input type="reset" value="Limpar"><br>
+        </estilobody>
+        </form>
+        <?php
+}
+
+function consultarIngresso($pdo, $atualizarID = null)
+{
+    if (is_null($atualizarID)) {
+        $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso_Cliente');
+    } else {
+        $consulta = $pdo->query(
+            "SELECT * FROM Tipo_Ingresso_Cliente WHERE id_tipo_ingresso_cliente = $atualizarID;");
+    }
+    $IngressoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    return $IngressoArray;
+}
+
+function listarIngresso($pdo)
+{
+    $IngressoArray = consultarIngresso($pdo);
+    $idcliente = $IngressoArray[0]['id_cliente'];
+    $idingresso = $IngressoArray[0]['id_tipo_ingresso'];
+    $volumeingresso = $IngressoArray[0]['volume_ingresso'];
+
+    $clienteArray = consultarClientes($pdo);
+    $nome = $clienteArray[0]['nome_cliente'];
+
+    $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso');
+    $tipoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+    $tipo = $tipoArray[0]['descricao_ingresso'];
+
+    ?>
+    <estilobody>
+        <?php
+        echo 'Cliente' . '- ' . 'Tipo Ingresso' . ' - ' . 'Quantidade' . '<br>';
+        foreach ($IngressoArray as $ingressoDados) {
+            echo '<a href="tipoIngresso.php?DeletarID='
+                . $ingressoDados['id_tipo_ingresso_cliente'] . '">Deletar</a> '
+                . '<a href="tipoIngresso.php?AtualizarID='
+                . $ingressoDados['id_tipo_ingresso_cliente'] . '">Atualizar</a> '
+                . $ingressoDados['id_cliente'] . '-'
+                . $ingressoDados['id_tipo_ingresso'] . '-'
+                . $ingressoDados['volume_ingresso'] . '<br>' . PHP_EOL;
+        }
+        ?>
+    </estilobody>
+    <?php
+}
+
 function form()
 {
     ?>
@@ -17,7 +95,6 @@ function form()
     </form>
     <?php
 }
-
 
 function consultarClientes($pdo, $atualizarID = null)
 {
@@ -57,22 +134,6 @@ function listarCliente($pdoconexcao)
         ?>
     </estilobody>
     <?php
-}
-
-function consultarLivrosBanco($pdo, $atualizarID = null)
-{
-    if (is_null($atualizarID)) {
-        $consulta = $pdo->query('SELECT livro.id as "idLivro",
-                                 livro.nome as "nomeLivro", livro.ano, autor.nome  as "nomeAutor"
-                                 FROM livro, autor 
-                                 where livro.id_autor = autor.id');
-    } else {
-        $consulta = $pdo->query(
-            "SELECT * FROM livro, autor WHERE 
-              livro.id_autor = autor.id and id = $atualizarID;");
-    }
-    $livrosArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
-    return $livrosArray;
 }
 
 ?>
