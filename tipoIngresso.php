@@ -5,8 +5,6 @@
 <body>
 <ul>
     <li><a href="menu.php">Home</a></li>
-    <li><a href="cadastroCliente.php">Cadastro de Cliente</a></li>
-    <li><a href="tipoIngresso.php">Comprar Ingressos</a></li>
 </ul>
 </body>
 <head>
@@ -73,25 +71,25 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
         <form method="post" action="tipoIngresso.php">
             <estilobody>
                 Selecione o Cliente:
-                <select>
+                <select name="id_cliente">
                     <?php
                     $IngressoArray = consultarClientes($pdo);
-                    foreach ($IngressoArray as $ingressoDados){
-                        echo '<option value="' . $ingressoDados['id_cliente'] .'">' .$ingressoDados['nome_cliente'] . '</option>' . PHP_EOL;
+                    foreach ($IngressoArray as $ingressoDados) {
+                        echo '<option value="' . $ingressoDados['id_cliente'] . '">' . $ingressoDados['nome_cliente'] . '</option>' . PHP_EOL;
                     }
                     ?>
                 </select><br>
                 Selecione o Tipo de Ingresso:
-                <select>
+                <select  name="id_tipo_ingresso">
                     <?php
                     $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso');
                     $IngressoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($IngressoArray as $ingressoDados){
-                        echo '<option value="' . $ingressoDados['id_tipo_ingresso'] .'">' .$ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
+                    foreach ($IngressoArray as $ingressoDados) {
+                        echo '<option value="' . $ingressoDados['id_tipo_ingresso'] . '">' . $ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
                     }
                     ?>
                 </select><br>
-                Quantidade: <input type="number" name="volumeIngresso"/><br>
+                Quantidade: <input type="number" name="volume_ingresso" value="<?php echo $volumeingresso; ?>"/><br>
 
                 <input type="submit" name="action" value="Atualizar"/>
                 <a href="tipoIngresso.php">Cancelar</a>
@@ -112,6 +110,7 @@ if (!empty($atualizarID) && empty($deletarID) && $action == 'Atualizar') {
     //atualização no BD
     $comandoSQL = "UPDATE Tipo_Ingresso_Cliente SET id_tipo_ingresso = '$idingresso', id_cliente = '$idcliente', volume_ingresso = '$volumeingresso'
                          WHERE id_tipo_ingresso_cliente = '$atualizarID';";
+
     $pdo->exec($comandoSQL);
 
     formingresso($pdo);
