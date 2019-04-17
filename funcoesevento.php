@@ -80,7 +80,7 @@ function form()
             CPF : <input type="number" name="cpf"/><br>
             Email: <input type="text" name="email"/><br>
             Telefone: <input type="number" name="telefone"/><br>
-<!--            Defina uma senha: <input type="password" name="senha"/><br>-->
+            Defina uma senha: <input type="password" name="senha"/><br>
 
             <input type="submit" name="action" value="Cadastrar"/>
             <input type="reset" value="Limpar"><br>
@@ -129,4 +129,10 @@ function listarCliente($pdoconexcao)
     <?php
 }
 
+function logout(){
+    session_start();
+    session_destroy();
+
+    header('Location: login.php');
+}
 ?>
