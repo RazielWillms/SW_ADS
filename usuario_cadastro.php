@@ -28,4 +28,5 @@ if (!is_null($senhaAberta)) {
     $sql = "insert into usuario(nome, senha) " . "VALUE('$nome', '$senhaParaArmazenarNoBanco');";
     $pdo->exec($sql);
 }
+    
 ?>
