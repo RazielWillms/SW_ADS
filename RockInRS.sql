@@ -13,10 +13,11 @@ create table Tipo_Ingresso(
  
  create table Cliente(
 	id_cliente integer primary key auto_increment,
-	nome_cliente varchar(50),
-        cpf varchar(15),
-        email varchar(50),
-        telefone varchar(14)
+	nome_cliente varchar(50)unique,
+	cpf varchar(15),
+	email varchar(50),
+	telefone varchar(14),
+	senha varchar(100)
  );
  select * from Cliente;
 
@@ -28,12 +29,7 @@ create table Tipo_Ingresso(
 	 foreign key(id_tipo_ingresso) references Tipo_Ingresso(id_tipo_ingresso),
 	 foreign key(id_cliente) references Cliente(id_cliente)
  );
- 
- INSERT INTO Tipo_Ingresso_Cliente(id_tipo_ingresso, id_cliente, volume_ingresso) VALUES('1', '2', ' 2');
-                    
- UPDATE Tipo_Ingresso_Cliente SET id_tipo_ingresso = 1, id_cliente = 2, volume_ingresso = 2 WHERE id_tipo_ingresso_cliente = 13;
-                         
- select * from Tipo_Ingresso_Cliente;
+  select * from Tipo_Ingresso_Cliente;
  
  create table Endereco_Cliente(
 	 id_endereco_cliente integer primary key auto_increment,
@@ -42,3 +38,4 @@ create table Tipo_Ingresso(
 	 nome_cliente varchar(50),
 	 foreign key(id_cliente) references Cliente(id_cliente)
  );
+   select * from Endereco_Cliente;
