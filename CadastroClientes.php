@@ -2,12 +2,21 @@
 <title>
     CADASTRO CLIENTE
 </title>
+<body>
+<ul>
+    <li><a href="menu.php">Home</a></li>
+    <li><a href="cadastroCliente.php">Cadastro de Cliente</a></li>
+    <li><a href="tipoIngresso.php">Comprar Ingressos</a></li>
+</ul>
+</body>
 <head>
     <estiloTitle>
         Cadastro do Cliente<br><br>
     </estiloTitle>
 </head>
+
 </html>
+
 <?php
 require_once "style.php";
 require_once "funcoesEvento.php";
@@ -15,8 +24,9 @@ require_once "funcoesEvento.php";
 $pdo = new PDO("mysql:host=localhost:3306; dbname=RockinRS;charset=latin1", 'root', '');
 
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-$atualizarID = filter_input(INPUT_GET, 'AtualizarID', FILTER_VALIDATE_INT);
-$deletarID = filter_input(INPUT_GET, 'DeletarID', FILTER_VALIDATE_INT);
+$atualizarID = filter_input(INPUT_GET, 'atualizarID', FILTER_VALIDATE_INT);
+$deletarID = filter_input(INPUT_GET, 'deletarID', FILTER_VALIDATE_INT);
+//$senhaAberta = filter_input(INPUT_POST, 'senha', FILTER_DEFAULT);
 
 // exibe cadastro e listagem
 if (empty($atualizarID) && empty($deletarID) && empty($action)) {
@@ -31,6 +41,7 @@ if (empty($atualizarID) && empty($deletarID) && $action == 'Cadastrar') {
     $cpf = filter_input(INPUT_POST, 'cpf', FILTER_VALIDATE_INT);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
     $telefone = filter_input(INPUT_POST, 'telefone', FILTER_VALIDATE_INT);
+//    $senha =
 
     //inserção BD
     $comandoSQL = "INSERT INTO Cliente(nome_cliente, cpf, email, telefone)
@@ -65,7 +76,7 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
         $email = $ClienteArray[0]['email'];
         $telefone = $ClienteArray[0]['telefone'];
         ?>
-        <form method="post">
+        <form method="post" action="cadastroCliente.php?atualizarID=<?php echo $atualizarID; ?>">
             <estilobody>
                 <input type="hidden" value="<?php echo $id; ?>" name="id">
                 Nome: <input type="text" value="<?php echo $nomeCliente; ?>" name="nomeCliente"/><br>
@@ -81,7 +92,7 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
         <?php
     }
     listarCliente($pdo);
-    $atualizarID = null;
+//    $atualizarID = null;
 }
 
 //atualizar
