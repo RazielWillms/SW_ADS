@@ -1,3 +1,20 @@
+<estiloTitle>
+    <?php
+    require_once "style.php";
+    session_start();
+    if (session_id() == null || !isset($_SESSION['nome_cliente'])) {
+        ?>
+        <body>
+        <ul>
+            <li><a href="menu.php">Home</a></li>
+        </ul>
+        </body>
+        <?php
+        die('Usuário não logado!');
+
+    }
+    ?>
+</estiloTitle>
 <html>
 <title>
     COMPRA INGRESSO
@@ -5,8 +22,6 @@
 <body>
 <ul>
     <li><a href="menu.php">Home</a></li>
-    <li><a href="cadastroCliente.php">Cadastro de Cliente</a></li>
-    <li><a href="tipoIngresso.php">Comprar Ingressos</a></li>
 </ul>
 </body>
 <head>
@@ -76,11 +91,11 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
                 <select name="id_cliente">
                     <?php
                     $IngressoArray = consultarClientes($pdo);
-                    foreach ($IngressoArray as $ingressoDados){
+                    foreach ($IngressoArray as $ingressoDados) {
 
-                        $selected = ($ingressoDados['id_cliente']==$idcliente)?'selected':'';
+                        $selected = ($ingressoDados['id_cliente'] == $idcliente) ? 'selected' : '';
 
-                        echo '<option '.$selected.' value="' . $ingressoDados['id_cliente'] .'">' .$ingressoDados['nome_cliente'] . '</option>' . PHP_EOL;
+                        echo '<option ' . $selected . ' value="' . $ingressoDados['id_cliente'] . '">' . $ingressoDados['nome_cliente'] . '</option>' . PHP_EOL;
                     }
                     ?>
                 </select><br>
@@ -89,11 +104,11 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
                     <?php
                     $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso');
                     $IngressoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($IngressoArray as $ingressoDados){
+                    foreach ($IngressoArray as $ingressoDados) {
 
-                        $selected = ($ingressoDados['id_tipo_ingresso']==$idingresso)?'selected':'';
+                        $selected = ($ingressoDados['id_tipo_ingresso'] == $idingresso) ? 'selected' : '';
 
-                        echo '<option '.$selected.' value="' . $ingressoDados['id_tipo_ingresso'] .'">' .$ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
+                        echo '<option ' . $selected . ' value="' . $ingressoDados['id_tipo_ingresso'] . '">' . $ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
                     }
                     ?>
                 </select><br>
