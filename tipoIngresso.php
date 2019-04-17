@@ -5,6 +5,8 @@
 <body>
 <ul>
     <li><a href="menu.php">Home</a></li>
+    <li><a href="cadastroCliente.php">Cadastro de Cliente</a></li>
+    <li><a href="tipoIngresso.php">Comprar Ingressos</a></li>
 </ul>
 </body>
 <head>
@@ -21,8 +23,8 @@ require_once "funcoesEvento.php";
 $pdo = new PDO("mysql:host=localhost:3306; dbname=RockinRS;charset=latin1", 'root', '');
 
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-$atualizarID = filter_input(INPUT_GET, 'AtualizarID', FILTER_VALIDATE_INT);
-$deletarID = filter_input(INPUT_GET, 'DeletarID', FILTER_VALIDATE_INT);
+$atualizarID = filter_input(INPUT_GET, 'atualizarID', FILTER_VALIDATE_INT);
+$deletarID = filter_input(INPUT_GET, 'deletarID', FILTER_VALIDATE_INT);
 
 // exibe cadastro e listagem
 if (empty($atualizarID) && empty($deletarID) && empty($action)) {
@@ -68,24 +70,30 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
         $idingresso = $IngressoArray[0]['id_tipo_ingresso'];
         $volumeingresso = $IngressoArray[0]['volume_ingresso'];
         ?>
-        <form method="post" action="tipoIngresso.php">
+        <form method="post" action="tipoIngresso.php?atualizarID=<?php echo $atualizarID; ?>">
             <estilobody>
                 Selecione o Cliente:
                 <select name="id_cliente">
                     <?php
                     $IngressoArray = consultarClientes($pdo);
-                    foreach ($IngressoArray as $ingressoDados) {
-                        echo '<option value="' . $ingressoDados['id_cliente'] . '">' . $ingressoDados['nome_cliente'] . '</option>' . PHP_EOL;
+                    foreach ($IngressoArray as $ingressoDados){
+
+                        $selected = ($ingressoDados['id_cliente']==$idcliente)?'selected':'';
+
+                        echo '<option '.$selected.' value="' . $ingressoDados['id_cliente'] .'">' .$ingressoDados['nome_cliente'] . '</option>' . PHP_EOL;
                     }
                     ?>
                 </select><br>
                 Selecione o Tipo de Ingresso:
-                <select  name="id_tipo_ingresso">
+                <select name="id_tipo_ingresso">
                     <?php
                     $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso');
                     $IngressoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($IngressoArray as $ingressoDados) {
-                        echo '<option value="' . $ingressoDados['id_tipo_ingresso'] . '">' . $ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
+                    foreach ($IngressoArray as $ingressoDados){
+
+                        $selected = ($ingressoDados['id_tipo_ingresso']==$idingresso)?'selected':'';
+
+                        echo '<option '.$selected.' value="' . $ingressoDados['id_tipo_ingresso'] .'">' .$ingressoDados['descricao_ingresso'] . '</option>' . PHP_EOL;
                     }
                     ?>
                 </select><br>
@@ -98,7 +106,6 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
         <?php
     }
     listarIngresso($pdo);
-    $atualizarID = null;
 }
 
 //atualizar
@@ -110,7 +117,6 @@ if (!empty($atualizarID) && empty($deletarID) && $action == 'Atualizar') {
     //atualização no BD
     $comandoSQL = "UPDATE Tipo_Ingresso_Cliente SET id_tipo_ingresso = '$idingresso', id_cliente = '$idcliente', volume_ingresso = '$volumeingresso'
                          WHERE id_tipo_ingresso_cliente = '$atualizarID';";
-
     $pdo->exec($comandoSQL);
 
     formingresso($pdo);
