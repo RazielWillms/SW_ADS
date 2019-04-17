@@ -7,7 +7,8 @@ create table Tipo_Ingresso(
 	id_tipo_ingresso integer primary key auto_increment,
 	descricao_ingresso longtext,
     valor_ingresso float
- );       
+ ); 
+ -- entra ingressos disponíveis
  insert into Tipo_Ingresso(descricao_ingresso, valor_ingresso) values ("Pista", 30), ("Pista-VIP", 50), ("Camarote", 100), ("Front stage", 150);
  select * from Tipo_Ingresso;
  
@@ -19,6 +20,7 @@ create table Tipo_Ingresso(
 	telefone varchar(14),
 	senha varchar(100)
  );
+ INSERT INTO Cliente(nome_cliente, cpf, email, telefone, senha) VALUES('Raziel', 157, 'raziel@willms.com', 666,'$2y$10$UAiuiDmd0D.zxaBN/QXiy.ppLRPq.VibFLIilBIvQcYIZ.3TQbYr2');
  select * from Cliente;
 
  create table Tipo_Ingresso_Cliente(
