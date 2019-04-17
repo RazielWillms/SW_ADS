@@ -46,29 +46,21 @@ function consultarIngresso($pdo, $atualizarID = null)
     return $IngressoArray;
 }
 
-function listarIngresso($pdo)
+function listarIngresso($pdoconexcao)
 {
-    $IngressoArray = consultarIngresso($pdo);
+    $IngressoArray = consultarIngresso($pdoconexcao);
     $idcliente = $IngressoArray[0]['id_cliente'];
     $idingresso = $IngressoArray[0]['id_tipo_ingresso'];
     $volumeingresso = $IngressoArray[0]['volume_ingresso'];
-
-    $clienteArray = consultarClientes($pdo);
-    $nome = $clienteArray[0]['nome_cliente'];
-
-    $consulta = $pdo->query('SELECT * FROM Tipo_Ingresso');
-    $tipoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
-    $tipo = $tipoArray[0]['descricao_ingresso'];
 
     ?>
     <estilobody>
         <?php
         echo 'Cliente' . '- ' . 'Tipo Ingresso' . ' - ' . 'Quantidade' . '<br>';
         foreach ($IngressoArray as $ingressoDados) {
-            echo '<a href="tipoIngresso.php?DeletarID='
+            echo '<a href="tipoIngresso.php?deletarID='
                 . $ingressoDados['id_tipo_ingresso_cliente'] . '">Deletar</a> '
-                . '<a href="tipoIngresso.php?AtualizarID='
+                . '<a href="tipoIngresso.php?atualizarID='
                 . $ingressoDados['id_tipo_ingresso_cliente'] . '">Atualizar</a> '
                 . $ingressoDados['id_cliente'] . '-'
                 . $ingressoDados['id_tipo_ingresso'] . '-'
@@ -88,6 +80,7 @@ function form()
             CPF : <input type="number" name="cpf"/><br>
             Email: <input type="text" name="email"/><br>
             Telefone: <input type="number" name="telefone"/><br>
+<!--            Defina uma senha: <input type="password" name="senha"/><br>-->
 
             <input type="submit" name="action" value="Cadastrar"/>
             <input type="reset" value="Limpar"><br>
@@ -122,9 +115,9 @@ function listarCliente($pdoconexcao)
         <?php
         echo 'Nome' . '- ' . 'cpf' . ' - ' . 'email' . ' - ' . 'telefone' . '<br>';
         foreach ($ClienteArray as $ClienteDados) {
-            echo '<a href="cadastroCliente.php?DeletarID='
+            echo '<a href="cadastroCliente.php?deletarID='
                 . $ClienteDados['id_cliente'] . '">Deletar</a> '
-                . '<a href="cadastroCliente.php?AtualizarID='
+                . '<a href="cadastroCliente.php?atualizarID='
                 . $ClienteDados['id_cliente'] . '">Atualizar</a> '
                 . $ClienteDados['nome_cliente'] . '-'
                 . $ClienteDados['cpf'] . '-'
