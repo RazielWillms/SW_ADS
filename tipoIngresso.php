@@ -40,6 +40,7 @@ $pdo = new PDO("mysql:host=localhost:3306; dbname=RockinRS;charset=latin1", 'roo
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
 $atualizarID = filter_input(INPUT_GET, 'atualizarID', FILTER_VALIDATE_INT);
 $deletarID = filter_input(INPUT_GET, 'deletarID', FILTER_VALIDATE_INT);
+$complementarID = filter_input(INPUT_GET, 'complementarID', FILTER_VALIDATE_INT);
 
 // exibe cadastro e listagem
 if (empty($atualizarID) && empty($deletarID) && empty($action)) {
