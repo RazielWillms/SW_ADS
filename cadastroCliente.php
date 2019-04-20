@@ -5,7 +5,6 @@
 <body>
 <ul>
     <li><a href="menu.php">Home</a></li>
-    <li><a href="endereco.php">Complementar cadastro</a> </li>
 </ul>
 </body>
 <head>
@@ -74,6 +73,7 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
         $cpf = $ClienteArray[0]['cpf'];
         $email = $ClienteArray[0]['email'];
         $telefone = $ClienteArray[0]['telefone'];
+        $senhaParaArmazenarNoBanco = $ClienteArray[0]['senha'];
         ?>
         <form method="post" action="cadastroCliente.php?atualizarID=<?php echo $atualizarID; ?>">
             <estilobody>
@@ -82,6 +82,7 @@ if (!empty($atualizarID) && empty($deletarID) && empty($action)) {
                 CPF : <input type="number" value="<?php echo $cpf; ?>" name="cpf"/><br>
                 Email: <input type="text" value="<?php echo $email; ?>" name="email"/><br>
                 Telefone: <input type="number" value="<?php echo $telefone; ?>" name="telefone"/><br>
+                <input type="hidden" value="<?php echo $senhaParaArmazenarNoBanco; ?>" name="id">
 
                 <input type="submit" name="action" value="Atualizar"/>
                 <a href="cadastroCliente.php">Cancelar</a>
@@ -100,8 +101,10 @@ if (!empty($atualizarID) && empty($deletarID) && $action == 'Atualizar') {
     $cpf = filter_input(INPUT_POST, 'cpf', FILTER_VALIDATE_INT);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
     $telefone = filter_input(INPUT_POST, 'telefone', FILTER_VALIDATE_INT);
+    $senhaAberta = filter_input(INPUT_POST, 'senha', FILTER_DEFAULT);
+    $senhaParaArmazenarNoBanco = password_hash($senhaAberta, PASSWORD_DEFAULT);
 
-    //atualização no BD
+//    atualização no BD
     $comandoSQL = "UPDATE Cliente SET nome_cliente = '$nomeCliente', cpf = '$cpf', email = '$email', telefone = '$telefone'
                          WHERE id_cliente = '$atualizarID';";
     $pdo->exec($comandoSQL);
