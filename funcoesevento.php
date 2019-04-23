@@ -34,54 +34,6 @@ function formingresso($pdo)
     <?php
 }
 
-function consultarIngressojoin($pdo, $atualizarID = null)
-{
-    if (is_null($atualizarID)) {
-        $consulta = $pdo->query("select Tipo_Ingresso_Cliente.id_tipo_ingresso_cliente as 'id_Tipo_Ingresso_Cliente', Tipo_Ingresso_Cliente.id_tipo_ingresso, Tipo_Ingresso_Cliente.id_cliente, Tipo_Ingresso_Cliente.volume_ingresso as 'volume_ingresso', Cliente.id_cliente as 'id_cliente', Cliente.nome_cliente as 'cliente_nome', Tipo_Ingresso.id_tipo_ingresso as 'id_tipo_ingresso', Tipo_Ingresso.descricao_ingresso as 'ingresso_tipo'
- from Cliente, Tipo_Ingresso, Tipo_Ingresso_Cliente where Cliente.id_cliente = Tipo_Ingresso_Cliente.id_cliente and Tipo_Ingresso.id_tipo_ingresso = Tipo_Ingresso_Cliente.id_tipo_ingresso;");
-    } else {
-        $consulta = $pdo->query("select Tipo_Ingresso_Cliente.id_tipo_ingresso_cliente as 'id_Tipo_Ingresso_Cliente', Tipo_Ingresso_Cliente.id_tipo_ingresso, Tipo_Ingresso_Cliente.id_cliente, Tipo_Ingresso_Cliente.volume_ingresso as 'volume_ingresso', Cliente.id_cliente as 'id_cliente', Cliente.nome_cliente as 'cliente_nome', Tipo_Ingresso.id_tipo_ingresso as 'id_tipo_ingresso', Tipo_Ingresso.descricao_ingresso as 'ingresso_tipo'
- from Cliente, Tipo_Ingresso, Tipo_Ingresso_Cliente where Cliente.id_cliente = Tipo_Ingresso_Cliente.id_cliente and Tipo_Ingresso.id_tipo_ingresso = Tipo_Ingresso_Cliente.id_tipo_ingresso and Tipo_Ingresso_Cliente.id_tipo_ingresso_cliente = $atualizarID;");
-
-    }
-    $IngressoArray = $consulta->fetchAll(PDO::FETCH_ASSOC);
-    return $IngressoArray;
-}
-
-function listarIngressojoin($pdoconexcao)
-{
-    $IngressoArray = consultarIngresso($pdoconexcao);
-    $idvenda = $IngressoArray[0]['id_Tipo_Ingresso_Cliente'];
-    $volumeingresso = $IngressoArray[0]['volume_ingresso'];
-
-    $idcliente = $IngressoArray[0]['id_cliente'];
-    $nomecliente = $IngressoArray[0]['cliente_nome'];
-
-    $idingresso = $IngressoArray[0]['id_tipo_ingresso'];
-    $nomeingresso = $IngressoArray[0]['ingresso_tipo'];
-
-    echo $nomecliente;
-    echo $nomeingresso;
-    echo $volumeingresso;
-
-    ?>
-    <estilobody>
-        <?php
-        echo 'Cliente' . '- ' . 'Tipo Ingresso' . ' - ' . 'Quantidade' . '<br>';
-        foreach ($IngressoArray as $ingressoDados) {
-            echo '<a href="tipoIngresso.php?deletarID='
-                . $ingressoDados['id_tipo_ingresso_cliente'] . '">Deletar</a> '
-                . '<a href="tipoIngresso.php?atualizarID='
-                . $ingressoDados['id_tipo_ingresso_cliente'] . '">Atualizar</a> '
-                . $ingressoDados['cliente_nome'] . '-'
-                . $ingressoDados['ingresso_tipo'] . '-'
-                . $ingressoDados['volume_ingresso'] . '<br>' . PHP_EOL;
-        }
-        ?>
-    </estilobody>
-    <?php
-}
-
 function consultarIngresso($pdo, $atualizarID = null)
 {
     if (is_null($atualizarID)) {
